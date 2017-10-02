@@ -4,10 +4,10 @@ import android.location.Location;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.weathernow.App;
 import com.example.weathernow.R;
+import com.example.weathernow.weatherScreen.WeatherActivity;
 
 import javax.inject.Inject;
 
@@ -79,8 +79,8 @@ public class SplashActivity extends AppCompatActivity implements Splash.View {
     @Override
     public void navigateToMainScreen(String temperature, String status, String
                                      location) {
-        Toast.makeText(this, temperature + ", " + status + " em " + location ,
-                Toast.LENGTH_LONG).show();
+        startActivity(
+                WeatherActivity.getIntent(this, temperature, status, location));
     }
 
 }
