@@ -16,7 +16,8 @@ import dagger.Component;
  */
 
 @Singleton
-@Component(modules = {WeatherModule.class, LocalizationModule.class})
+@Component(modules = {AppModule.class, WeatherModule.class, LocalizationModule
+        .class})
 public interface AppComponent {
 
     // Make Weather.service injectable for dependent Components

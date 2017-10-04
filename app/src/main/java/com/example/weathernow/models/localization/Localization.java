@@ -15,8 +15,6 @@ public interface Localization {
     }
 
     interface Callback {
-        void handleMissingLocationPermission();
-
         void onRequestLocationSuccess(Location location);
 
         void onRequestLocationFail(String Error);
