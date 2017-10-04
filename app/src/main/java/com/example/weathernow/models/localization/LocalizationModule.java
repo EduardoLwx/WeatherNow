@@ -1,5 +1,7 @@
 package com.example.weathernow.models.localization;
 
+import android.app.Application;
+
 import javax.inject.Singleton;
 
 import dagger.Module;
@@ -15,7 +17,7 @@ import dagger.Provides;
 public class LocalizationModule {
     @Provides
     @Singleton
-    Localization.Service providerLocalizationService(){
-        return new LocalizationService();
+    Localization.Service providerLocalizationService(Application application){
+        return new LocalizationService(application);
     }
 }

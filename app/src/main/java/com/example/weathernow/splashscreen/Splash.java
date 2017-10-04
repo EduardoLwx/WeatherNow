@@ -12,8 +12,6 @@ interface Splash {
     interface View {
         void showProgressGettingLocation();
 
-        void handleNoLocationPermissionError();
-
         void handleGettingLocationError(String error);
 
         void onGettingLocationFinish(Location location);

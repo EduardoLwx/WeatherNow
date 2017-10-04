@@ -61,12 +61,6 @@ public class SplashPresenterTest {
 
 //  Localization.Callback  /////////////////////////////////////////////////////
     @Test
-    public void testHandleMissingLocationPermission(){
-        splashPresenter.handleMissingLocationPermission();
-        verify(splashView).handleNoLocationPermissionError();
-    }
-
-    @Test
     public void testOnRequestLocationSuccess(){
         Location location = new Location("");
         splashPresenter.onRequestLocationSuccess(location);

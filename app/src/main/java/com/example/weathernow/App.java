@@ -19,6 +19,7 @@ public class App extends Application{
         super.onCreate();
 
         mAppComponent = DaggerAppComponent.builder()
+                .appModule(new AppModule(this))
                 .localizationModule(new LocalizationModule())
                 .weatherModule(new WeatherModule())
                 .build();

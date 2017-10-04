@@ -28,7 +28,7 @@ class SplashPresenter implements Splash.Presenter,
     }
 
 
-//  Splash.Presenter  //////////////////////////////////////////////////
+//  Splash.Presenter  //////////////////////////////////////////////////////////
     @Override
     public void requestLocal() {
         mSplashView.showProgressGettingLocation();
@@ -41,12 +41,7 @@ class SplashPresenter implements Splash.Presenter,
         mWeatherService.requestWeather(this, location);
     }
 
-    //  Localization.Callback  /////////////////////////////////////////////////////
-    @Override
-    public void handleMissingLocationPermission() {
-        mSplashView.handleNoLocationPermissionError();
-    }
-
+//  Localization.Callback  /////////////////////////////////////////////////////
     @Override
     public void onRequestLocationSuccess(Location location) {
         mSplashView.onGettingLocationFinish(location);
