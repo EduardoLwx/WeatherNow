@@ -1,6 +1,6 @@
 # WeatherNow
 
-Um aplicativo android simples que fornece a previsão do tempo atual para sua localizaçã.
+Um aplicativo android simples que fornece a previsão do tempo atual para sua localização.
 
 O projeto é composto por duas activities, a SplashActivity responsável pela obtenção da localização e a WeatherActivity que é responsável pela exibição da previsão obtida. 
 
