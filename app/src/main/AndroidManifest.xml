@@ -3,6 +3,8 @@
           package="com.example.weathernow">
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 <application
         android:allowBackup="true"
         android:name=".App"
@@ -13,7 +15,8 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".splashscreen.SplashActivity"
-            android:theme="@style/Theme.AppCompat.NoActionBar">
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -21,7 +24,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".weatherScreen.WeatherActivity"
-                  android:theme="@style/Theme.AppCompat.NoActionBar">
+                  android:theme="@style/Theme.AppCompat.NoActionBar"
+                  android:screenOrientation="portrait">
         </activity>
     </application>
 

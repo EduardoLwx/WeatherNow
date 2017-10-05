@@ -1,5 +1,7 @@
 package com.example.weathernow.models.weather;
 
+import android.app.Application;
+
 import javax.inject.Singleton;
 
 import dagger.Module;
@@ -16,8 +18,8 @@ public class WeatherModule {
 
     @Provides
     @Singleton
-    Weather.Service providerWeatherService(){
-        return new WeatherService();
+    Weather.Service providerWeatherService(Application application){
+        return new WeatherService(application);
     }
 
 }
