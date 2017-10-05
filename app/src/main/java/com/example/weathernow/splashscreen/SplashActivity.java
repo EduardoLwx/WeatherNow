@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -60,7 +61,16 @@ public class SplashActivity extends AppCompatActivity implements Splash.View {
                         REQUEST_LOCATION_PERMISSION);
             }
         } else {
-            mSplashPresenter.requestLocal();
+
+            //   Needed because sometimes is so fast that splash
+            // screen appears to be broke
+            Handler handle = new Handler();
+            handle.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    mSplashPresenter.requestLocal();
+                }
+            }, 1000);
         }
     }
 
