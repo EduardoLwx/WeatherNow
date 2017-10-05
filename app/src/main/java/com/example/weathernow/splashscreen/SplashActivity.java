@@ -8,6 +8,8 @@ import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.weathernow.App;
@@ -21,6 +23,7 @@ public class SplashActivity extends AppCompatActivity implements Splash.View {
 
     private TextView mTextLoadingProgress;
     private TextView mTextError;
+    private Button mButtonTryAgain;
 
     @Inject
     protected Splash.Presenter mSplashPresenter;
@@ -29,8 +32,9 @@ public class SplashActivity extends AppCompatActivity implements Splash.View {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        mTextLoadingProgress = (TextView)findViewById(R.id.text_loading_progress);
-        mTextError = (TextView)findViewById(R.id.text_error);
+        mTextLoadingProgress = findViewById(R.id.text_loading_progress);
+        mTextError = findViewById(R.id.text_error);
+        mButtonTryAgain = findViewById(R.id.button_try_again);
 
         DaggerSplashComponent.builder()
                 .appComponent(((App)getApplicationContext()).getAppComponent())
@@ -42,6 +46,22 @@ public class SplashActivity extends AppCompatActivity implements Splash.View {
     @Override
     protected void onResume() {
         super.onResume();
+
+        //   Needed because sometimes is so fast that splash
+        // screen appears to be broke
+        Handler handle = new Handler();
+        handle.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                getDataFromServices();
+            }
+        }, 1000);
+    }
+
+
+    private void getDataFromServices(){
+        super.onResume();
+        setStringProgress(R.string.msg_loading_start);
         boolean permissionCoarseLocation = ContextCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager
                 .PERMISSION_GRANTED;
@@ -52,8 +72,7 @@ public class SplashActivity extends AppCompatActivity implements Splash.View {
         if(!permissionCoarseLocation || !permissionFineLocation){
             if (ActivityCompat.shouldShowRequestPermissionRationale(this,
                     Manifest.permission.ACCESS_FINE_LOCATION)) {
-                mTextLoadingProgress.setText("");
-                mTextError.setText(R.string.msg_error_no_permission_location);
+                setStringError(R.string.msg_error_no_permission_location);
             } else {
                 ActivityCompat.requestPermissions(this,
                         new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
@@ -61,16 +80,7 @@ public class SplashActivity extends AppCompatActivity implements Splash.View {
                         REQUEST_LOCATION_PERMISSION);
             }
         } else {
-
-            //   Needed because sometimes is so fast that splash
-            // screen appears to be broke
-            Handler handle = new Handler();
-            handle.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    mSplashPresenter.requestLocal();
-                }
-            }, 1000);
+            mSplashPresenter.requestLocal();
         }
     }
 
@@ -83,23 +93,37 @@ public class SplashActivity extends AppCompatActivity implements Splash.View {
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     mSplashPresenter.requestLocal();
                 } else {
-                    mTextLoadingProgress.setText("");
-                    mTextError.setText(R.string.msg_error_no_permission_location);
+                    setStringError(R.string.msg_error_no_permission_location);
                 }
                 break;
         }
     }
 
-    //  Splash.View  ///////////////////////////////////////////////////////////////
+    public void tryAgain(View view){
+        getDataFromServices();
+    }
+
+    private void setStringProgress(int stringResource){
+        mTextLoadingProgress.setText(stringResource);
+        mTextError.setText("");
+        mButtonTryAgain.setVisibility(View.INVISIBLE);
+    }
+
+    private void setStringError(int stringResource){
+        mTextLoadingProgress.setText("");
+        mTextError.setText(stringResource);
+        mButtonTryAgain.setVisibility(View.VISIBLE);
+    }
+
+    //  Splash.View  ///////////////////////////////////////////////////////////
     @Override
     public void showProgressGettingLocation() {
-        mTextLoadingProgress.setText(R.string.msg_loading_location);
+        setStringProgress(R.string.msg_loading_location);
     }
 
     @Override
     public void handleGettingLocationError(String error) {
-        mTextLoadingProgress.setText("");
-        mTextError.setText(R.string.msg_error_loading_location);
+        setStringError(R.string.msg_error_loading_location);
     }
 
     @Override
@@ -109,19 +133,17 @@ public class SplashActivity extends AppCompatActivity implements Splash.View {
 
     @Override
     public void showProgressGettingWeather() {
-        mTextLoadingProgress.setText(R.string.msg_loading_weather);
+        setStringProgress(R.string.msg_loading_weather);
     }
 
     @Override
     public void handleNoInternetConnectionError() {
-        mTextLoadingProgress.setText("");
-        mTextError.setText(R.string.msg_error_no_internet_connection);
+        setStringError(R.string.msg_error_no_internet_connection);
     }
 
     @Override
     public void handleGettingWeatherError(String error) {
-        mTextLoadingProgress.setText("");
-        mTextError.setText(R.string.msg_error_loading_weather);
+        setStringError(R.string.msg_error_loading_weather);
     }
 
     @Override
